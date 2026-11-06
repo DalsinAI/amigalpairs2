@@ -1,0 +1,78 @@
+# LPairs2 2.3.2 for AmigaOS 3.x, 68040/68060 + FPU, on OpenGPU's SDL 2.
+#
+#   make -f amiga/Makefile.amigaos -j2 dist \
+#        STOVE=/path/to/openamigagcc-16.2.0-open4 \
+#        NDK=/path/to/OpenNDK/Include_H SDL2KIT=/path/to/opengpu-sdk
+#
+# src/Makefile.am's lpairs2, with amiga/defines.h for configure's (no
+# gettext: English), the themes at PROGDIR:data/themes. SDL2KIT is the
+# OpenGPU developer kit (SDL2, SDL2_image, SDL2_mixer, SDL2_ttf: the
+# program's halves of LIBS:OpenGPU's modules).
+
+STOVE   ?= $(HOME)/CradleLab/toolchain/openamigagcc-16.2.0-open4-x86_64-linux
+NDK     ?= $(HOME)/CradleLab/gfopensdk/OpenNDK/Include_H
+SDL2KIT ?= /mnt/amigachrome/team2/deps/opengpu-sdk
+CC      = $(STOVE)/bin/m68k-amigaos-gcc
+CXX     = $(STOVE)/bin/m68k-amigaos-g++
+STRIP   = $(STOVE)/bin/m68k-amigaos-strip
+CPU     ?= -m68040 -m68881
+# -fno-tree-loop-distribute-patterns: GCC 16's loop miscompile (the kit's
+# sdl2-config gives it for GCC 16 too).
+OPT     ?= -O2 -fomit-frame-pointer -fno-tree-loop-distribute-patterns
+
+BUILD   = build/amigaos
+OBJDIR  = $(BUILD)/obj
+PROG    = LPairs2
+OUT     = dist/LPairs2
+
+DEFS    = -D__amigaos__ -DDATADIR=\"PROGDIR:data\" -DCONFIGDIR=\"PROGDIR:\" \
+          -DLOCALEDIR=\"PROGDIR:locale\"
+INC     = -I$(SDL2KIT)/include -I$(SDL2KIT)/include/SDL2
+CFLAGS  = -noixemul $(OPT) $(CPU) -fno-common -MMD -MP -w
+CXXFLAGS = $(CFLAGS) $(DEFS) $(INC) -std=gnu++11 -include amiga/defines.h -include amiga/amiga_prefix.hpp
+LDFLAGS = -noixemul $(CPU)
+LIBS    = -L$(SDL2KIT)/lib -lSDL2_mixer -lSDL2_image -lSDL2_ttf -lSDL2 -lpthread -latomic -lm
+
+CXXSRC  = $(addprefix src/,sdl.cpp tools.cpp config.cpp theme.cpp menu.cpp sprite.cpp main.cpp \
+            game.cpp view.cpp)
+CSRC    = amiga/amiga_start.c amiga/amiga_screens.c amiga/stack.c
+OBJS    = $(CXXSRC:%.cpp=$(OBJDIR)/%.o) $(CSRC:%.c=$(OBJDIR)/%.o)
+ICONS   = $(wildcard amiga/icons/*.info)
+
+all: $(BUILD)/$(PROG)
+
+$(BUILD)/$(PROG): $(OBJS)
+	$(CXX) $(LDFLAGS) -o $@.debug $(OBJS) $(LIBS)
+	$(STRIP) -o $@ $@.debug
+
+$(OBJDIR)/amiga/%.o: amiga/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -std=gnu99 -I$(NDK) -Wall -c -o $@ $<
+
+$(OBJDIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+# The drawer: the program; data/themes/Standard with the cards, pictures,
+# backgrounds, fonts and sounds (and their CREDITS); ReadMe, upstream's
+# README and the licence. The settings are kept in the drawer's
+# lpairs2.conf.
+dist: $(BUILD)/$(PROG) $(ICONS) AMIGA_PORT.md
+	rm -rf $(OUT) && mkdir -p $(OUT)/data/themes
+	cp $(BUILD)/$(PROG) $(OUT)/
+	cp -R src/themes/Standard $(OUT)/data/themes/
+	find $(OUT)/data -name 'Makefile*' -delete
+	cp AMIGA_PORT.md $(OUT)/ReadMe
+	cp README $(OUT)/ReadMe-upstream
+	cp COPYING $(OUT)/COPYING.txt
+	cp amiga/icons/LPairs2.info amiga/icons/ReadMe.info $(OUT)/
+	for f in ReadMe-upstream COPYING.txt; do cp amiga/icons/ReadMe.info $(OUT)/$$f.info; done
+	cp amiga/icons/Folder.info $(OUT)/data.info
+	cp amiga/icons/LPairs2-drawer.info dist/LPairs2.info
+
+-include $(OBJS:.o=.d)
+
+clean:
+	rm -rf $(BUILD)
+
+.PHONY: all clean dist

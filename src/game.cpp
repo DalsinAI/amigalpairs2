@@ -52,8 +52,13 @@ void Game::initCards(uint cols, uint rows, uint matchsize)
 	numCardsLeft = numCards;
 
 	/* get pair ids (first numCards/2 are chosen from all) */
+#ifdef __amigaos__
+	/* no std::random_device here (it throws); main() seeds rand() */
+	mt19937 g(rand());
+#else
 	random_device rd;
 	mt19937 g(rd());
+#endif
 	vector<int> pids;
 	for (uint i = 0; i < numMotifs; i++)
 		pids.push_back(i);

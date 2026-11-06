@@ -40,7 +40,11 @@ Config::Config()
 
 	/* graphics */
 	animations = 1;
+#ifdef __amigaos__
+	fullscreen = 0; /* a window on the Workbench */
+#else
 	fullscreen = 1;
+#endif
 	fps = 1;
 	showfps = 0;
 
@@ -52,7 +56,11 @@ Config::Config()
 	dname = CONFIGDIR;
 	if (dname[0] == '~')
 		dname = getHomeDir() + "/" + dname.substr(1);
+#ifdef __amigaos__
+	fname = "PROGDIR:lpairs2.conf"; /* beside the program */
+#else
 	fname = dname + "/.lpairs2.conf";
+#endif
 
 	/* load */
 	_loginfo("Loading configuration %s\n",fname.c_str());
