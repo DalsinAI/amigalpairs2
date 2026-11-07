@@ -1,0 +1,28 @@
+2.3.2:
+- added auto flip option (2025/02/03 MS)
+
+2.3.1:
+- added menu button (2024/06/22 MS)
+- allow right mouse button to restart game (2024/06/22 MS)
+
+2.3:
+- renamed errors to mistakes (2023/07/27 MS)
+- added endless game mode survivor (2023/07/27 MS)
+
+2.2.1:
+- added ini file for themes and option for relative icon size (2023/06/10 MS)
+
+2.2:
+- themes now have subfolders for motifs and backgrounds (2022/04/18 MS)   
+- added caption for cards (2022/04/18 MS)
+- added missing cross compiling stuff (2021/04/07 MS)
+- allow using SPACE to open cards (2019/11/25 MS)
+
+2.1:
+- added two-player mode and cpu opponent
+- added triplets and quadruplets
+- fixed bug in error counting
+- renamed score to pairs
+
+2.0:
+- initial public release

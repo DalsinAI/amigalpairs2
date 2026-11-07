@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=LPairs2
+Comment=A classic memory game with nice graphics.
+Exec=lpairs2
+Icon=
+Type=Application
+Categories=Game;

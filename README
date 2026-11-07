@@ -1,0 +1,47 @@
+LPairs2
+-------
+
+LPairs2 is a classic memory game using animal pictures as standard theme.
+Note, that set sizes differ according to whether you run in fullscreen or 
+window mode. This is because window mode is 4:3 (assuming someone running 
+window mode wants to see something else as well and 16:9 is just to broad 
+then). That means if you switch from window to fullscreen while playing 
+(menu can be accessed any time by ESC) your current game gets restarted.
+
+You can also try to match triplets and quadruplets (fun, but hard...) and
+play against a CPU opponent (or another human player).
+
+In mode Survivor you get one point for each match. It starts with 4x4 cards
+and gets gradually harder. The game ends when you made more mistakes than
+you gained score. Clearing a stage gives you the stage number as bonus
+points. The largest set is 10x7 which theoretically you can play endlessly
+if you are good enough.
+
+Themes
+------
+
+You can create your own themes by adding a new directory in themes named 
+whatever you like. You can replace any of the files 
+  c_back.png	closed card
+  c_focus.png	closed card used if mouse hovering
+  c_front.png	opened card (gets motifs added)
+  menu.png		overlay for menu (put on top of running game so should be 
+		  		somewhat transparent)
+  s_			sounds
+and put any files into the subfolders
+  backgrounds	contains background images
+  motifs		contains motifs for building cards (can be of any size,
+  				will be scaled up/down as needed)  
+  
+Note that c_back/front/focus.png MUST all be square and same sized.
+Motifs are mandatory. Whatever else is missing is taken from Standard theme.
+Motif file names should not contain spaces. Use underscores instead which
+will be replaced in game. The file name (without extension) can be displayed
+(if enabled in menu) for learning purposes.
+  		
+If you submit own sets please make sure you use properly licensed images and
+state those licenses in a CREDIT file (look at Standard's CREDITS for an 
+example).
+
+Enjoy,
+Michael	
