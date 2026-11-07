@@ -32,7 +32,12 @@ void Theme::load(string name, Renderer &r)
 
 	path = string(DATADIR) + "/themes/" + name;
 
+#ifdef __amigaos__
+	/* a drawer cannot be opened as a file on AmigaOS */
+	if (!dirExists(path))
+#else
 	if (!fileExists(path))
+#endif
 		_logerr("CRITICAL ERROR: theme %s not found. We continue but most likely it will crash...\n",path.c_str());
 	_loginfo("Loading theme %s\n",path.c_str());
 

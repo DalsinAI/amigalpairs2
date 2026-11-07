@@ -23,8 +23,15 @@ using namespace std;
 #include "menu.h"
 #include "view.h"
 
+#ifdef __amigaos__
+extern "C" void amiga_start(void); /* amiga/amiga_start.c: into the drawer */
+#endif
+
 int main(int argc, char **argv)
 {
+#ifdef __amigaos__
+	amiga_start();
+#endif
 	/* i18n */
 #ifdef ENABLE_NLS
 	setlocale (LC_ALL, "");
