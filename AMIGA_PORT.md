@@ -81,5 +81,5 @@ in data/themes/Standard/CREDITS: the animal photographs from Wikipedia
 under CC BY, CC BY-SA, GFDL, the Free Art Licence or in the public
 domain; the backgrounds, card textures and sounds in the public domain;
 the Source Sans Pro fonts under the SIL Open Font License (SIL-OFL.txt).
-The Amiga files (amiga/): the AmiCradle Team, GPL 3 or later; the icon is
-upstream's lpairs2.png, made smaller.
+The Amiga files (amiga/): the AmiCradle Team, GPL 3 or later; the icons are
+our own GlowIcons (amiga/icons/art/lpairs2.svg).
